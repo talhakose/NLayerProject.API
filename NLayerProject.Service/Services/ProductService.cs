@@ -7,12 +7,14 @@ using NLayerProject.Core.Models;
 using NLayerProject.Core.Repository;
 using NLayerProject.Core.Services;
 using NLayerProject.Data.UnitOfWorks;
+using NLayerProject.Core.UnitOfWorks;
+
 
 namespace NLayerProject.Service.Services
 {
     public class ProductService : Service<Product>,IProductService
     {
-        public ProductService(UnitOfWork unitOfWork, IRepository<Product> repository) : base(unitOfWork, repository)
+        public ProductService(IUnitOfWork unitOfWork, IRepository<Product> repository) : base(unitOfWork, repository)
         {
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NLayerProject.Core.Repository;
 using NLayerProject.Core.Services;
+using NLayerProject.Core.UnitOfWorks;
 using NLayerProject.Data.Repositories;
 using NLayerProject.Data.UnitOfWorks;
 
@@ -12,10 +13,10 @@ namespace NLayerProject.Service.Services
 {
     public class Service<TEntity>:IService<TEntity> where TEntity: class
     {
-        public readonly UnitOfWork _unitOfWork;
+        public readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<TEntity> _repository;
 
-        public Service(UnitOfWork unitOfWork, IRepository<TEntity> repository)
+        public Service(IUnitOfWork unitOfWork, IRepository<TEntity> repository)
         {
             _unitOfWork = unitOfWork;
             _repository = repository;
