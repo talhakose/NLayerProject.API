@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using NLayerProject.Core.Models;
 using NLayerProject.Core.Repository;
 using NLayerProject.Core.Services;
-using NLayerProject.Core.UnitOfWorks;
 using NLayerProject.Data.UnitOfWorks;
 
 namespace NLayerProject.Service.Services

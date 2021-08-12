@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using NLayerProject.Core.Models;
@@ -9,7 +10,7 @@ using NLayerProject.Data.UnitOfWorks;
 
 namespace NLayerProject.Service.Services
 {
-    public class CategoryService:Service<Category>,ICategoryService
+    public class CategoryService : Service<Category>,ICategoryService
     {
         public CategoryService(UnitOfWork unitOfWork, IRepository<Category> repository) : base(unitOfWork, repository)
         {
