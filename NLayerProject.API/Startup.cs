@@ -10,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NLayerProject.Core.UnitOfWorks;
+using NLayerProject.Data;
+using NLayerProject.Data.UnitOfWorks;
 
 namespace NLayerProject.API
 {
@@ -25,6 +29,18 @@ namespace NLayerProject.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration["ConnectionStrings:PostgreSql"].ToString(), o =>
+                {
+                    o.MigrationsAssembly("NLayerProject.Data");
+                });
+
+            });
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
             services.AddControllers();
         }
 
