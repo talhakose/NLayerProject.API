@@ -10,7 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using NLayerProject.API.Dtos;
+using NLayerProject.API.Extensions;
+using NLayerProject.API.Filters;
 using NLayerProject.Core.Repository;
 using NLayerProject.Core.Services;
 using NLayerProject.Core.UnitOfWorks;
@@ -34,14 +40,14 @@ namespace NLayerProject.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IService<>), typeof(Service<>));
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(GenericNotFoundFilter<>));
 
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -54,8 +60,18 @@ namespace NLayerProject.API
 
             services.AddHttpClient();
 
+            services.AddControllers(o =>
+            {
+                o.Filters.Add(new ValidationFilter());
+            });
 
             services.AddControllers();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true; // Aspnetcore mimarisinin error göndermesini devredýþý býrakýp kendimizin errorleri yakalayacaðýmýzý belirtiyoruz
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +81,8 @@ namespace NLayerProject.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCustomException(); //My Custom Extensions
 
             app.UseHttpsRedirection();
 
